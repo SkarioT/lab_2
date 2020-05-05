@@ -14,7 +14,7 @@ while True :
     #подготовка для вывода
     sr_final=(str(MIN) + srrr*(int(IMT)-MIN) + '|' + srrr*(MAX-int(IMT)-1) + str(MAX))
     print("Индекс Массы Тела для",FIO,"равен: ",IMT)
-
+    #печать "заключения"
     if IMT <=20:
         print("Заключение по результату полученных данных: кушай больше")
     if IMT > 20 and IMT < 25:
