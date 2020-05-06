@@ -1,7 +1,9 @@
 #пример формата вводи прописываем первый раз при запуске.
 print("Пример Ввода данных:\n Введите Ваше ФИО : ФИО\n Введите Ваш пол : М/Ж\n Введите Ваш возраст : 22\n Введите Ваш Вес : 79 \n Введите Ваш Рост : 1.69 \n ______________________")
 while True :
-    while True:
+    print("Цикл 1",exit)
+    while exit!="N":
+        print("цикл 2")
     #входные данные
         FIO=input("Введите ваше ФИО : ")
         SEX=input("Введите ваш пол : ")
@@ -39,7 +41,16 @@ while True :
             rez=zaklychenie[2]
             print("Заключение по результату полученных данных: ",zaklychenie[2])
         print(sr_final,"\n",'____'*20)
+        #занесение полученных данных
+
         collection=(FIO,SEX,AGE,weight,height,IMT,rez)
-        exit=input("Продолжаем ввод?")
-        print(collection)
+        #проверка на продолжение выполнения
+        exit=input("Продолжаем ввод? Y/N : ")
+        while (exit !="Y") and (exit!="N"): 
+            print("не корректный ввода, необходимо вводить Y или N")
+            exit=input("Продолжаем ввод? Y/N : ")
+            if exit=="N":
+                break
+    print(collection)
+    pass
 #final
