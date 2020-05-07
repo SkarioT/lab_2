@@ -1,4 +1,5 @@
 metadata={}
+print(metadata)
 id=0
 while True :
     menu=input("Выбирите пунк меню: \n 1) - добавить данные\n 2) - просмотреть данные\n 3) - поиск по ID\ФИО\n 4) - выход из пограммы \n Ваш выбор : ") 
@@ -59,7 +60,7 @@ while True :
             i=0
             while int(i) < int(id):
                 i+=1
-                #можно было бы вывести через .item(), но в таком случае не читабельно. Для читабельности вывожу по строчно
+                #построчный вывод данных, опираясь на ключ
                 print(metadata.get(i))
         print("_"*30)
     if menu=="4" or menu=="q":
@@ -81,9 +82,14 @@ while True :
             if find_menu=="2":
                 print('_'*20,"\nпоиск по ФИО")
                 find_FIO=input("Введите ФИО для поиска :")
-                #в процессе разработки
-                print(metadata)
-                #print(metadata.items())
+                if int(id)==0:
+                    print("Нет даныых. Введите хотя бы одного пользователя.")
+                i_i=1
+                while int(i_i) <= int(id):
+                    f_name="ФИО: " + metadata[i_i]["ФИО"] +"ПОЛ: "+ metadata[i_i]["ПОЛ"]+"ВЕС:"+ str(metadata[i_i]["ВЕС"])+"РОСТ:"+ str(metadata[i_i]["РОСТ"])+"ИМТ:"+ str(metadata[i_i]["ИМТ"])+"заключение:"+ str(metadata[i_i]["заключение"])
+                    if find_FIO in f_name:
+                        print(f_name)
+                    i_i+=1
                 find_menu=0
             if find_menu=="3":
                 break
