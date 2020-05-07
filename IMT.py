@@ -49,8 +49,7 @@ while True :
         print(sr_final,"\n",'____'*20)
         #занесение полученных данных
 
-        metadata[id]=({"ID" : id},{"ФИО" : FIO},{"ПОЛ":SEX},{"ВОЗРАСТ": int(AGE)},{"ВЕС" : float(weight)},{"РОСТ" : float(height)},{"ИМТ" : float(IMT)},{"заключение": rez})
-
+        metadata[id]={"ФИО" : FIO,"ПОЛ":SEX,"ВОЗРАСТ": int(AGE),"ВЕС" : float(weight),"РОСТ" : float(height),"ИМТ" : float(IMT),"заключение": rez}
         menu=0
     if menu=="2" :  
         print("Выбран пунк меню 2\n",'_'*30)
@@ -74,11 +73,17 @@ while True :
             if find_menu=="1":
                 print('_'*20,"\nВыбран поиск по ид")
                 find_id=input("Введите ID для поиска :")
-                print(metadata.get(int(find_id)),"_"*30)
+                if (metadata.get(int(find_id)))==None:
+                    print("ID не существует")
+                else:
+                    print(metadata.get(int(find_id)),"\n","_"*30)
                 find_menu=0
             if find_menu=="2":
                 print('_'*20,"\nпоиск по ФИО")
                 find_FIO=input("Введите ФИО для поиска :")
+                #в процессе разработки
+                print(metadata)
+                #print(metadata.items())
                 find_menu=0
             if find_menu=="3":
                 break

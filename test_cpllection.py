@@ -13,7 +13,7 @@ while True :
             AGE=input("Введите ваш возраст : ")
             weight=input("Введите ваш Вес : ")
             height=input("Введите ваш Рост : ")
-            metadata[id]=({"fio" : FIO},{"sex":SEX},{"age": AGE},{"weight",weight},{"height" : height})
+            metadata[id]=({"id": id},{"fio" : FIO},{"sex":SEX},{"age": AGE},{"weight":weight},{"height" : height})
             if FIO == 'q':
                 break
         menu=0
@@ -22,5 +22,19 @@ while True :
         i=0
         while int(i) < int(id):
             i+=1
-            print(str(metadata['1']))
+            print(metadata[1]['fio'])
+            print("вся структура данных:\n",metadata)
+    if menu=="3":
+        print("выбран пунк меню 3")
+        nd = {'id':{ 'Света Соколова': {  'пол':'женский', 'возраст': 16, 'хобби':['Цветы','Пение'],  },
+        'Иван Петров': {
+         'пол':'мужской',
+        'возраст': 40,
+        'хобби':['Рыбалка','Жим дивана лежа'],      
+        }}}
+        print(nd)
+        print(nd['id']['Иван Петров'])
+
+nd
+    
 
