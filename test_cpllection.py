@@ -22,5 +22,5 @@ while True :
         i=0
         while int(i) < int(id):
             i+=1
-            print(metadata.get(i))
+            print(str(metadata['1']))
 
