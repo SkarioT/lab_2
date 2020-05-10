@@ -4,11 +4,14 @@ id=0
 
 def main_menu(key):
     if key=='1':
+        #вызов функции для пввода данных
         imb_imput()
     if key=='2':
+        #вызов вфункции для просмотра данных
         show_metadata(id)
     if key=='3':
-        search_menu()
+        #вызов вфункции для поиска по данным
+        find_menu()
 
 def imb_imput():
         print("Выбран пункт меню - 1")
@@ -82,21 +85,52 @@ def show_metadata(id):
                 #построчный вывод данных, опираясь на ключ
                 print(metadata.get(i))
         print("_"*30)
-def search_menu():
+def find_menu():
     find_menu=input("Выбирите пунк меню:\n1)Поиск по ID\n2)Поиск по ФИО\n3)Возврат в предыдущее меню\nВаш выбор: ")
+    #проверка на корректность ввода. моё либомо != + and =)
+    while find_menu!="1" and find_menu!="2" and find_menu!="3":
+        find_menu=input("Не корректный ввод данных!\nВыбирите пунк меню:\n1)Поиск по ID\n2)Поиск по ФИО\n3)Возврат в предыдущее меню\nВаш выбор: ")
+
     if find_menu=="1":
         find_4_id()
     if find_menu=="2":
         find_4_FIO()
     if find_menu=="3":
         main_menu(0)
-        
-while True :
-    menu=input("Выбирите пунк меню: \n 1) - добавить данные\n 2) - просмотреть данные\n 3) - поиск по ID\ФИО\n 4) - выход из пограммы \n Ваш выбор : ") 
-    if menu=='4' or menu=="q":
-        print("Спасибо что воспользовались нашим ПО")
-        break
+ #   else:
+
+
+def find_4_id():
+    print('_'*20,"\nВыбран поиск по ид")
+    find_id=input("Введите ID для поиска :")
+    if (metadata.get(int(find_id)))==None:
+        print("ID {} не существует".format(find_id))
+        find_menu()
     else:
-        main_menu(menu)   
+        print(metadata.get(int(find_id)),"\n","_"*30)
+        find_menu()
+def find_4_FIO():
+    i_i=1
+    print('_'*20,"\nпоиск по ФИО")
+    find_FIO=input("Введите ФИО для поиска :")
+    if int(id)==0:
+        print("Нет даныых. Введите хотя бы одного пользователя.")
+    while int(i_i) <= int(id):
+        f_name="ФИО: " + metadata[i_i]["ФИО"] +" ПОЛ: "+ metadata[i_i]["ПОЛ"]+" ВЕС:"+ str(metadata[i_i]["ВЕС"])+" РОСТ:"+ str(metadata[i_i]["РОСТ"])+" ИМТ:"+ str(metadata[i_i]["ИМТ"])+" заключение:"+ str(metadata[i_i]["заключение"])
+        if find_FIO in f_name:
+            print(f_name)
+        i_i+=1
+
+
+def main():  
+    while True :
+        menu=input("Выбирите пунк меню: \n 1) - добавить данные\n 2) - просмотреть данные\n 3) - поиск по ID\ФИО\n 4) - выход из пограммы \n Ваш выбор : ") 
+        if menu=='4' or menu=="q":
+            print("Спасибо что воспользовались нашим ПО")
+            break
+        else:
+            main_menu(menu)   
     #debag:
     #print("запуск Цикла 1 ")
+
+main()
