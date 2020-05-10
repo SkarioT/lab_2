@@ -9,8 +9,6 @@ def main_menu(key):
         show_metadata(id)
     if key=='3':
         search_menu()
-    if key=='4' :
-        exit_menu()
 
 def imb_imput():
         print("Выбран пункт меню - 1")
@@ -84,10 +82,21 @@ def show_metadata(id):
                 #построчный вывод данных, опираясь на ключ
                 print(metadata.get(i))
         print("_"*30)
-
+def search_menu():
+    find_menu=input("Выбирите пунк меню:\n1)Поиск по ID\n2)Поиск по ФИО\n3)Возврат в предыдущее меню\nВаш выбор: ")
+    if find_menu=="1":
+        find_4_id()
+    if find_menu=="2":
+        find_4_FIO()
+    if find_menu=="3":
+        main_menu(0)
         
 while True :
     menu=input("Выбирите пунк меню: \n 1) - добавить данные\n 2) - просмотреть данные\n 3) - поиск по ID\ФИО\n 4) - выход из пограммы \n Ваш выбор : ") 
+    if menu=='4' or menu=="q":
+        print("Спасибо что воспользовались нашим ПО")
+        break
+    else:
+        main_menu(menu)   
     #debag:
     #print("запуск Цикла 1 ")
-    main_menu(menu)
