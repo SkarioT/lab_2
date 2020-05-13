@@ -1,43 +1,52 @@
-fp=open('1.txt','r')
-fp2=open('fp2.txt','w+')
+# парсим файл логов:
+# 1) подсчёт кол-во строк 
+# 2) подсчёт уникальных IP
+# 3) подсчёт браузеров(cколько запросов от Safari и от Firefox)
 
-print("содержимое fp(1.txt)",fp.read())
-print("содержимое fp2(fp2.txt)",fp2.read())
-fp.seek(0)
-fp2.seek(0)
-fp_1=fp.read()
-fp_2=fp2.read()
-fp_2=fp_1
-
-print("содержимое fp_2\n",fp_2)
-
-
-fp2.seek(0)
-fp.seek(0)
-
-fp2_list_all_lines=fp.readlines()
-fp2_list_one_line=fp2_list_all_lines[0].split() #развибка первой строки на отдлельыне слова
-seen =[]
-for line in fp2_list_all_lines:
-    if line not in seen:
-        seen.append(line)
-print("содержимое fp2_list после сохронения",seen)
-fp2.seek(0)
-i=0
-while i < len(seen):
-    seen_list=seen[i]
-    i+=1
-    fp2.write(seen_list)
-
-print("содержимое seem : ",len(seen))
-print("содержимое seem_list : ",seen_list)
-fp.close()
-fp2.close()
-
-fp_show=open('fp2.txt')
-fp_show_str=fp_show.readline()
-print(fp_show_str)
-print("_"*50)
 with open('1.txt','r') as fp:
-    myfile_=fp.read()
-print(myfile_)
+    myfile_lines=fp.readlines()
+    fp.seek(0)
+    myfile_read=fp.read()
+
+#функция полсчтёта кол-во строк
+def count_lines():
+    coun_str_in_file=(myfile_read.count('\n'))+1 #+1 т.к. в текущем файле последняя строка не имеет перенос
+    return coun_str_in_file
+
+print("кол-во строк : ",count_lines())
+
+#фукция для получения IP из N строки. Мали ли, пригодиться посмотреть IP в конкретной строке
+def get_ip(number_line):
+    #берём n строку из листа и заносим в отдельную строку
+    list_to_str=myfile_lines[int(number_line)]
+    #полученную строку разделяю на отдельный слова
+    split_str=list_to_str.split()
+    #заношу в переменную 1 слово( по логам 1 слово всегда == IP)
+    rez_ip_in_line=split_str[0]
+    return rez_ip_in_line
+
+#функция получает все IP присутствующие в файле.
+def all_ip_on_list():
+    rez_list=list()
+    i=0
+    while i < count_lines():
+        #rez=get_ip(i)
+        rez_list.append(get_ip(i))
+        i+=1
+    return rez_list
+
+print("кол-во ВСЕХ уникальных IP: ",len(all_ip_on_list()))
+
+
+uniq_ip=[]
+for line in all_ip_on_list():
+    if line not in uniq_ip:
+        uniq_ip.append(line)
+
+print("кол-во уникальных IP: ",len(uniq_ip))
+
+
+
+
+
+
