@@ -37,3 +37,7 @@ fp2.close()
 fp_show=open('fp2.txt')
 fp_show_str=fp_show.readline()
 print(fp_show_str)
+print("_"*50)
+with open('1.txt','r') as fp:
+    myfile_=fp.read()
+print(myfile_)
