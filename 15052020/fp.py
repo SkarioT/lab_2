@@ -8,6 +8,7 @@ with open('1.txt','r') as fp:
     fp.seek(0)
     myfile_read=fp.read()
 
+
 #функция полсчтёта кол-во строк
 def count_lines():
     coun_str_in_file=(myfile_read.count('\n'))+1 #+1 т.к. в текущем файле последняя строка не имеет перенос
@@ -30,20 +31,55 @@ def all_ip_on_list():
     rez_list=list()
     i=0
     while i < count_lines():
-        #rez=get_ip(i)
         rez_list.append(get_ip(i))
         i+=1
     return rez_list
 
-print("кол-во ВСЕХ уникальных IP: ",len(all_ip_on_list()))
+#print("кол-во ВСЕХ IP: ",len(all_ip_on_list()))
+
+#функция возвращает уникальные значения( как для IP(первых слов) так и для браузеров(последних слов))
+def uniq(function_name):
+    uniq=[]
+    for line in function_name:
+        if line not in uniq:
+            uniq.append(line)
+    return uniq
+
+print("кол-во уникальных IP: ",len(uniq(all_ip_on_list())))
+
+#функция получает последнее слово в N cтроке
+def last_word_on_line(line_number):
+    list_to_str=myfile_lines[line_number]
+#полученную строку разделяю на отдельные слова
+    split_str=list_to_str.split()
+#заношу в переменную длинну строки
+    len_str=len(split_str)-1
+    #заношу в переменную ПОСЛЕДНЕЕ СЛОВО 
+    rez_last_word_in_line=split_str[len_str]
+    return rez_last_word_in_line
+
+#функция возвращает лист состоящий из последних слов
+def def_last_word_list():
+    rez_list_browser_list=list()
+    i=0
+    while i < count_lines():
+        rez_list_browser_list.append(last_word_on_line(i))
+        i+=1
+    return rez_list_browser_list
+# 1 cпособ подсчтета браузеров(конечных слов), используя counter 
+def def_counter ():
+    from collections import Counter
+    cnt = Counter()
+    for word in def_last_word_list():
+        cnt[word] += 1
+    return cnt
 
 
-uniq_ip=[]
-for line in all_ip_on_list():
-    if line not in uniq_ip:
-        uniq_ip.append(line)
 
-print("кол-во уникальных IP: ",len(uniq_ip))
+print("Печать результато полученых спомощью counter : ",def_counter())
+fp2 = open('browser_list.txt','w')
+fp2.write(str(def_counter()))
+fp2.close()
 
 
 
