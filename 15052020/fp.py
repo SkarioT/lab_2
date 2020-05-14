@@ -14,7 +14,6 @@ def count_lines():
     coun_str_in_file=(myfile_read.count('\n'))+1 #+1 т.к. в текущем файле последняя строка не имеет перенос
     return coun_str_in_file
 
-print("кол-во строк : ",count_lines())
 
 #фукция для получения IP из N строки. Мали ли, пригодиться посмотреть IP в конкретной строке
 def get_ip(number_line):
@@ -35,7 +34,6 @@ def all_ip_on_list():
         i+=1
     return rez_list
 
-#print("кол-во ВСЕХ IP: ",len(all_ip_on_list()))
 
 #функция возвращает уникальные значения( как для IP(первых слов) так и для браузеров(последних слов))
 def uniq(function_name):
@@ -45,18 +43,20 @@ def uniq(function_name):
             uniq.append(line)
     return uniq
 
-print("кол-во уникальных IP: ",len(uniq(all_ip_on_list())))
+
 
 #функция получает последнее слово в N cтроке
 def last_word_on_line(line_number):
     list_to_str=myfile_lines[line_number]
-#полученную строку разделяю на отдельные слова
+    #полученную строку разделяю на отдельные слова
     split_str=list_to_str.split()
-#заношу в переменную длинну строки
+    #заношу в переменную длинну строки
     len_str=len(split_str)-1
     #заношу в переменную ПОСЛЕДНЕЕ СЛОВО 
     rez_last_word_in_line=split_str[len_str]
-    return rez_last_word_in_line
+    #удаляю в конце слова "
+    rez=rez_last_word_in_line.replace('\"','')
+    return rez
 
 #функция возвращает лист состоящий из последних слов
 def def_last_word_list():
@@ -65,6 +65,7 @@ def def_last_word_list():
     while i < count_lines():
         rez_list_browser_list.append(last_word_on_line(i))
         i+=1
+    rez_list_browser_list
     return rez_list_browser_list
 # 1 cпособ подсчтета браузеров(конечных слов), используя counter 
 def def_counter ():
@@ -72,14 +73,28 @@ def def_counter ():
     cnt = Counter()
     for word in def_last_word_list():
         cnt[word] += 1
-    return cnt
+    return dict(cnt)
+
+#закоментил свои танцы с бубом до того как сделал в выше описной функции return dict(cnt)
+    #чистка информации полученной counter`ор от записил Counter ( {...} ), привожу  к вижу словаря
+    # final_str=str(def_counter())
+    #clear_str=def_counter()
+    # a=final_str[8:]
+    # lenn_=len(a)-1
+    # clear_counter=a[:lenn_]
+    # clear_str=clear_counter.replace("\"","")
+
+print("кол-во строк : ",count_lines())
+print("кол-во ВСЕХ IP: ",len(all_ip_on_list()))
+print("кол-во уникальных IP: ",len(uniq(all_ip_on_list())))
+print("Данные о браузерах приведенные к виду словаря:",def_counter())
 
 
-
-print("Печать результато полученых спомощью counter : ",def_counter())
+#print("Печать результато полученых спомощью counter : ",def_counter())
 fp2 = open('browser_list.txt','w')
 fp2.write(str(def_counter()))
 fp2.close()
+
 
 
 
