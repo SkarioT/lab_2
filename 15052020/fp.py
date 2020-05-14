@@ -59,19 +59,21 @@ def last_word_on_line(line_number):
     return rez
 
 #функция возвращает лист состоящий из последних слов
-def def_last_word_list():
+def def_last_word_list(name):
     rez_list_browser_list=list()
     i=0
     while i < count_lines():
-        rez_list_browser_list.append(last_word_on_line(i))
+        #проверка на КОНКРЕТНЫЙ браузер
+        if last_word_on_line(i).startswith(name):
+            rez_list_browser_list.append(last_word_on_line(i))
         i+=1
     rez_list_browser_list
     return rez_list_browser_list
 # 1 cпособ подсчтета браузеров(конечных слов), используя counter 
-def def_counter ():
+def def_counter (name):
     from collections import Counter
     cnt = Counter()
-    for word in def_last_word_list():
+    for word in def_last_word_list(name):
         cnt[word] += 1
     return dict(cnt)
 
@@ -87,12 +89,13 @@ def def_counter ():
 print("кол-во строк : ",count_lines())
 print("кол-во ВСЕХ IP: ",len(all_ip_on_list()))
 print("кол-во уникальных IP: ",len(uniq(all_ip_on_list())))
-print("Данные о браузерах приведенные к виду словаря:",def_counter())
-
-
-#print("Печать результато полученых спомощью counter : ",def_counter())
+inputt=input("Введите название браузера для поиска : \n Возможные варианты \n Safari \n Firefox\n Ваш выбор: ")
+while inputt!="Safari" and inputt!="Firefox" :
+    inputt=input("Не корректный ввод.\nВведите название браузера для поиска : \n Возможные варианты \n Safari \n Firefox\n Ваш выбор: ")
+print("Данные о браузерах приведенные к виду словаря:",def_counter(inputt))
+print("По окончанию работы, программа сохронит в файл browser_list.tx информацию о выбранном вами браузере")
 fp2 = open('browser_list.txt','w')
-fp2.write(str(def_counter()))
+fp2.write(str(def_counter(inputt)))
 fp2.close()
 
 
