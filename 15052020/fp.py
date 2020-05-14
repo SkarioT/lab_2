@@ -93,14 +93,8 @@ inputt=input("Введите название браузера для поиск
 while inputt!="Safari" and inputt!="Firefox" :
     inputt=input("Не корректный ввод.\nВведите название браузера для поиска : \n Возможные варианты \n Safari \n Firefox\n Ваш выбор: ")
 print("Данные о браузерах приведенные к виду словаря:",def_counter(inputt))
-print("По окончанию работы, программа сохронит в файл browser_list.tx информацию о выбранном вами браузере")
+print("По окончанию работы, программа сохранит в файл browser_list.tx информацию о выбранном вами браузере")
 fp2 = open('browser_list.txt','w')
 fp2.write(str(def_counter(inputt)))
 fp2.close()
-
-
-
-
-
-
 
