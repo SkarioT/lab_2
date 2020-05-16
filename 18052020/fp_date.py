@@ -3,7 +3,8 @@
 # 2) подсчёт уникальных IP
 # 3) подсчёт браузеров(cколько запросов от Safari и от Firefox)
 # 4) разбивка по датам:
-# 4.1) кол-во уникальных ип в дату
+# 4.1) кол-во уникальных ип в дату(дней 3)
+# 4.2) cколько браузеров в каждый день
 import datetime
 import pytz
 import calendar
@@ -20,25 +21,61 @@ def count_lines():
     return coun_str_in_file
 
 
-#фукция для получения IP из N строки. Мали ли, пригодиться посмотреть IP в конкретной строке
-def get_ip(number_line):
+#фукция для получения WORD из N строки. 
+def get_word_4_possition(number_line,number_word=0):
     #берём n строку из листа и заносим в отдельную строку
     list_to_str=myfile_lines[int(number_line)]
     #полученную строку разделяю на отдельный слова
     split_str=list_to_str.split()
-    #заношу в переменную 1 слово( по логам 1 слово всегда == IP)
-    rez_ip_in_line=split_str[0]
-    return rez_ip_in_line
+    #для последнего слова  получаю ID его позиции
+    len_str=len(split_str)-1
 
-#функция получает все IP присутствующие в файле.
-def all_ip_on_list():
-    rez_list=list()
+    if number_word==0:
+        word_4_possition=split_str[number_word]
+    if number_word==3: 
+        rez=split_str[number_word]
+        clear_str=rez.replace('[','')
+        time_obj=datetime.datetime.strptime(clear_str,'%d/%B/%Y:%H:%M:%S')
+        return time_obj
+    if number_word=="lw":
+        number_word=len_str
+        rez=split_str[number_word]
+        word_4_possition=rez.replace('\"','')
+    else:
+        word_4_possition=split_str[number_word]
+    return word_4_possition
+
+
+#функция возвращает лист состоящий из слов по позиции
+#если на вход подать только слово(без второго параметра) - то вернеться, по умолчанию,список состоящий из последних слов ,т.е. по браузеров
+#если получаем на 2 позицию int, то этот int == поцизии слова в строке и вереться спискок состоящий из этих слов
+def def_word_list(name_word="Safari",word_possition="lw"):
+    rez_list_browser_list=list()
     i=0
     while i < count_lines():
-        rez_list.append(get_ip(i))
+        #проверка на КОНКРЕТНЫЙ браузер
+        if name_word ==0:
+            #print("зашли в первый иф")
+            rez_list_browser_list.append(get_word_4_possition(i,word_possition))
+        elif word_possition==3:
+            #print("зашли 2 иф")
+            #get_word_4_possition 4 2015-05-17 10:05:43)
+            non_str_data=get_word_4_possition(i,3)
+            str_datatime=non_str_data.strftime("%d.%m.%Y %H:%M:%S") # %H:%M
+            #type_datatime=rez_list_browser_list.append(str_datatime)
+            if str_datatime.startswith(str(name_word)):
+                rez_list_browser_list.append(str_datatime)
+        elif get_word_4_possition(i,word_possition).startswith(str(name_word)):
+            rez_list_browser_list.append(get_word_4_possition(i,word_possition))
         i+=1
-    return rez_list
+    return rez_list_browser_list
 
+def find_date(d=17):
+    rez_list_browser_list=list()
+    i=0
+    while i < count_lines():
+        type_datatime=get_word_4_possition(i,3)
+    return 
 
 #функция возвращает уникальные значения( как для IP(первых слов) так и для браузеров(последних слов))
 def uniq(function_name):
@@ -48,51 +85,78 @@ def uniq(function_name):
             uniq.append(line)
     return uniq
 
-
-
-#функция получает последнее слово в N cтроке
-def last_word_on_line(line_number):
-    list_to_str=myfile_lines[line_number]
-    #полученную строку разделяю на отдельные слова
-    split_str=list_to_str.split()
-    #заношу в переменную длинну строки
-    len_str=len(split_str)-1
-    #заношу в переменную ПОСЛЕДНЕЕ СЛОВО 
-    rez_last_word_in_line=split_str[len_str]
-    #удаляю в конце слова "
-    rez=rez_last_word_in_line.replace('\"','')
-    return rez
-
-#функция возвращает лист состоящий из последних слов
-def def_last_word_list(name):
-    rez_list_browser_list=list()
-    i=0
-    while i < count_lines():
-        #проверка на КОНКРЕТНЫЙ браузер
-        if last_word_on_line(i).startswith(name):
-            rez_list_browser_list.append(last_word_on_line(i))
-        i+=1
-    rez_list_browser_list
-    return rez_list_browser_list
 # 1 cпособ подсчтета браузеров(конечных слов), используя counter 
-def def_counter (name):
+def def_counter (name,possition):
     from collections import Counter
     cnt = Counter()
-    for word in def_last_word_list(name):
+    for word in def_word_list(name,possition):
         cnt[word] += 1
     return dict(cnt)
 
-if __name__ == "__main__":
-    pass
-    print("кол-во строк : ",count_lines())
-    print("кол-во ВСЕХ IP: ",len(all_ip_on_list()))
-    print("кол-во уникальных IP: ",len(uniq(all_ip_on_list())))
-    inputt=input("Введите название браузера для поиска : \n Возможные варианты \n Safari \n Firefox\n Ваш выбор: ")
-    while inputt!="Safari" and inputt!="Firefox" :
-        inputt=input("Не корректный ввод.\nВведите название браузера для поиска : \n Возможные варианты \n Safari \n Firefox\n Ваш выбор: ")
-    print("Данные о браузерах приведенные к виду словаря:",def_counter(inputt))
-    print("По окончанию работы, программа сохранит в файл browser_list.tx информацию о выбранном вами браузере")
-    fp2 = open('browser_list.txt','w')
-    fp2.write(str(def_counter(inputt)))
-    fp2.close()
+def ctc(): #печает время в UTC и +3 не используя .utcnow()
+    tz_minsk = pytz.timezone("Europe/Minsk")
+    tz_utc   = pytz.timezone('UTC')
+    ct_minsk=datetime.datetime.now()
+    d_minsk=tz_minsk.localize(ct_minsk)
+    utc_minsk=d_minsk.astimezone(tz_utc)
+    print(utc_minsk)
+    print(d_minsk)
+
+
+
+print("Текущее время в UTC/+3:")
+ctc()
+
+date_start=datetime.datetime.now()
+print("Вычисление минимальной и максимальной даты для поиска... ")
+#вычисляю минимальную и максимальную дату
+data_=def_word_list(0,3)
+min_data=min(data_)
+max_data=max(data_)
+date_stop_calculate=datetime.datetime.now()
+print("Вычисление произведено за : ",date_stop_calculate-date_start,"cекунд")
+
+
+print("get_word_4_possition 4",(get_word_4_possition(1,3)))
+# type_datatime=get_word_4_possition(1,3)
+# str_datatime=type_datatime.strftime("%d%m%Y")
+# 
+# print("get_word_4_possition 4  STR",str_datatime)
+
+
+while True:
+    menu=input("Выберите пунк меню для работы:\n1)Узнать кол-во всех строк\n2)Узнать кол-во ВСЕХ IP\n3)Меню поиска по параметру(IP|Дата|Браузер)\n Ваш выбор?:")
+    if menu=='1':      
+        print("кол-во строк : ",count_lines())
+    if menu=='2':
+        print("кол-во ВСЕХ IP: ",len(def_word_list(0,0)))
+    if menu=='3':
+        print('_'*20,"\nВыбран поиск по параметру")
+        while True:
+            input_menu_3=input("Введите что будем искать:\n1)Поиск по IP\n2)Поиск по дате\n3)Поиск браузеру\n4)Поиск по позиции в строке\n Ваш выбор?:")
+            if input_menu_3=='1':
+                print("Выбран поиск по IP")
+                inptut_ip=input("Введите IP для поиска(можно частично): ")
+                print("Кол-во запросов с IP {} :".format(inptut_ip),len(def_word_list(inptut_ip,0)))
+                print("Cписок IP {} :".format(inptut_ip),(def_word_list(inptut_ip,0)))
+                print("Cписок уникальных IP из {} :".format(inptut_ip),uniq(def_word_list(inptut_ip,0)))
+                print("Кол-во запросов от IP из {} :".format(inptut_ip),(def_counter(inptut_ip,0)))
+            if input_menu_3=='2':
+
+                print("Выбран поиск по Дате")
+                inptut_day=input("Введите дату для поиска(можно частично,на пример только день)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
+                print("Кол-во запросов  в дату {} :".format(inptut_day),len(def_word_list(inptut_day,3)))
+                #print("Список запросов  в дату {} с указанием времени:".format(inptut_day),(def_word_list(inptut_day,3)))
+                print("Кол-во уникальных запросов за {} число с указанием времени(ЧЧ:ММ:СС) - {} ,перечень этих запросов: ".format(inptut_day,(len(uniq(def_word_list(inptut_day,3))))),(uniq(def_word_list(inptut_day,3))))
+                print("Кол-во запросов за  {} число с указанием их кол-ва в конкретную минуту:".format(inptut_day),(def_counter(inptut_day,3)))
+            if input_menu_3=='3':
+                print("Выбран поиск по Браузеру")
+                inptut_ip=input("Введите название браузера для поиска(можно частично): ")
+                print("Кол-во запросов c браузером {} :".format(inptut_ip),len(def_word_list(inptut_ip,'lw')))
+                print("Cписок Браузеров {} и их версии :".format(inptut_ip),(def_word_list(inptut_ip,'lw')))
+                dub_input=input("Убрать дублирующие записи и подситать кол-во уникальны?\nВведите д - для выполениня опарации или введите любой другой символ для пропуска данного меню:")
+                if dub_input=='д':
+                    print("Спискок браузеров и их версии без дубликавов")
+                    print("Cписок Браузеров {},их версии и кол-во:".format(inptut_ip),def_counter(inptut_ip,'lw'))
+
 
