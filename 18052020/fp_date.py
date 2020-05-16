@@ -33,6 +33,7 @@ def get_word_4_possition(number_line,number_word=0):
     if number_word==0:
         word_4_possition=split_str[number_word]
     if number_word==3: 
+        #отдельный блок для перевода строки в дату
         rez=split_str[number_word]
         clear_str=rez.replace('[','')
         time_obj=datetime.datetime.strptime(clear_str,'%d/%B/%Y:%H:%M:%S')
@@ -60,6 +61,7 @@ def def_word_list(name_word="Safari",word_possition="lw"):
         elif word_possition==3:
             #print("зашли 2 иф")
             #get_word_4_possition 4 2015-05-17 10:05:43)
+            #отдельный блок для перевода из даты в строку для поиска минимальной даты
             non_str_data=get_word_4_possition(i,3)
             str_datatime=non_str_data.strftime("%d.%m.%Y %H:%M:%S") # %H:%M
             #type_datatime=rez_list_browser_list.append(str_datatime)
@@ -107,17 +109,30 @@ def ctc(): #печает время в UTC и +3 не используя .utcnow
 print("Текущее время в UTC/+3:")
 ctc()
 
+def get_min_max_date():
+    data_=def_word_list(0,3)
+    global min_data
+    global max_data
+    min_data=min(data_)
+    max_data=max(data_)
+    min_time_str=datetime.datetime.strftime(min_data,'%d %m %Y %H %M %S').split()
+    max_time_str=datetime.datetime.strftime(max_data,'%d %m %Y %H %M %S').split()
+    min_day=min_time_str[0]
+    max_day=max_time_str[0]
+    return min_day,max_day
+
+
 date_start=datetime.datetime.now()
 print("Вычисление минимальной и максимальной даты для поиска... ")
-#вычисляю минимальную и максимальную дату
-data_=def_word_list(0,3)
-min_data=min(data_)
-max_data=max(data_)
+#вызываем функцию для вычисления минимальной и максимальной доступной даты дату
+#заношу в переменную real_day - результат функции(т.е. минимальную и максимальную возможную дату)
+real_day=get_min_max_date()
 date_stop_calculate=datetime.datetime.now()
+
 print("Вычисление произведено за : ",date_stop_calculate-date_start,"cекунд")
 
 
-print("get_word_4_possition 4",(get_word_4_possition(1,3)))
+#print("get_word_4_possition 4",(get_word_4_possition(1,3)))
 # type_datatime=get_word_4_possition(1,3)
 # str_datatime=type_datatime.strftime("%d%m%Y")
 # 
@@ -133,7 +148,7 @@ while True:
     if menu=='3':
         print('_'*20,"\nВыбран поиск по параметру")
         while True:
-            input_menu_3=input("Введите что будем искать:\n1)Поиск по IP\n2)Поиск по дате\n3)Поиск браузеру\n4)Поиск по позиции в строке\n Ваш выбор?:")
+            input_menu_3=input("Введите что будем искать:\n1)Поиск по IP\n2)Поиск по дате\n3)Поиск браузеру\n4)Выход в предыдущее меню\n Ваш выбор?:")
             if input_menu_3=='1':
                 print("Выбран поиск по IP")
                 inptut_ip=input("Введите IP для поиска(можно частично): ")
@@ -142,13 +157,17 @@ while True:
                 print("Cписок уникальных IP из {} :".format(inptut_ip),uniq(def_word_list(inptut_ip,0)))
                 print("Кол-во запросов от IP из {} :".format(inptut_ip),(def_counter(inptut_ip,0)))
             if input_menu_3=='2':
-
                 print("Выбран поиск по Дате")
-                inptut_day=input("Введите дату для поиска(можно частично,на пример только день)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
+                print("real_day[0],real_day[1]",real_day[0],real_day[1])
+                inptut_day=input("Введите дату для поиска(конкретный день, на пример число 17)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
+                #проверка на корректность ввода даты
+                print("real_day[0],real_day[1]",real_day[0],real_day[1])
+                while inptut_day<real_day[0] or inptut_day>real_day[1]:
+                    inptut_day=input("Не корркетный ввод. Дата не должна быть меньше и/или больше  минимальной/максимальной даты\nВведите дату для поиска(можно частично,на пример только день)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
                 print("Кол-во запросов  в дату {} :".format(inptut_day),len(def_word_list(inptut_day,3)))
                 #print("Список запросов  в дату {} с указанием времени:".format(inptut_day),(def_word_list(inptut_day,3)))
                 print("Кол-во уникальных запросов за {} число с указанием времени(ЧЧ:ММ:СС) - {} ,перечень этих запросов: ".format(inptut_day,(len(uniq(def_word_list(inptut_day,3))))),(uniq(def_word_list(inptut_day,3))))
-                print("Кол-во запросов за  {} число с указанием их кол-ва в конкретную минуту:".format(inptut_day),(def_counter(inptut_day,3)))
+                print("\n"*3,"Кол-во запросов за  {} число с указанием их кол-ва в конкретную секунду:".format(inptut_day),(def_counter(inptut_day,3)))
             if input_menu_3=='3':
                 print("Выбран поиск по Браузеру")
                 inptut_ip=input("Введите название браузера для поиска(можно частично): ")
@@ -158,5 +177,7 @@ while True:
                 if dub_input=='д':
                     print("Спискок браузеров и их версии без дубликавов")
                     print("Cписок Браузеров {},их версии и кол-во:".format(inptut_ip),def_counter(inptut_ip,'lw'))
+            if input_menu_3=='4':
+                break
 
 
