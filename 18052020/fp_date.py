@@ -8,6 +8,7 @@
 import datetime
 import pytz
 import calendar
+import os
 
 with open('1.txt','r') as fp:
     myfile_lines=fp.readlines()
@@ -61,7 +62,7 @@ def def_word_list(name_word="Safari",word_possition="lw"):
         elif word_possition==3:
             #print("зашли 2 иф")
             #get_word_4_possition 4 2015-05-17 10:05:43)
-            #отдельный блок для перевода из даты в строку для поиска минимальной даты
+            #отдельный блок для перевода из даты в строку для поиска минимальной
             non_str_data=get_word_4_possition(i,3)
             str_datatime=non_str_data.strftime("%d.%m.%Y %H:%M:%S") # %H:%M
             #type_datatime=rez_list_browser_list.append(str_datatime)
@@ -109,6 +110,7 @@ def ctc(): #печает время в UTC и +3 не используя .utcnow
 print("Текущее время в UTC/+3:")
 ctc()
 
+#функцция вычислят минимальную дату и максимальную дату найденную в логе и возвращает значение этих дат
 def get_min_max_date():
     data_=def_word_list(0,3)
     global min_data
@@ -129,7 +131,7 @@ print("Вычисление минимальной и максимальной �
 real_day=get_min_max_date()
 date_stop_calculate=datetime.datetime.now()
 
-print("Вычисление произведено за : ",date_stop_calculate-date_start,"cекунд")
+print("Вычисление произведено за : ",date_stop_calculate-date_start,"cекунд(ы)")
 
 
 #print("get_word_4_possition 4",(get_word_4_possition(1,3)))
@@ -158,15 +160,15 @@ while True:
                 print("Кол-во запросов от IP из {} :".format(inptut_ip),(def_counter(inptut_ip,0)))
             if input_menu_3=='2':
                 print("Выбран поиск по Дате")
-                print("real_day[0],real_day[1]",real_day[0],real_day[1])
+
                 inptut_day=input("Введите дату для поиска(конкретный день, на пример число 17)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
                 #проверка на корректность ввода даты
-                print("real_day[0],real_day[1]",real_day[0],real_day[1])
-                while inptut_day<real_day[0] or inptut_day>real_day[1]:
+                while (int(real_day[0])> int(inptut_day)) or (int(real_day[1])< int(inptut_day)):
                     inptut_day=input("Не корркетный ввод. Дата не должна быть меньше и/или больше  минимальной/максимальной даты\nВведите дату для поиска(можно частично,на пример только день)\nМинимальная дата {} максимальная дата {}\nВаш выбор?: ".format(min_data,max_data))
                 print("Кол-во запросов  в дату {} :".format(inptut_day),len(def_word_list(inptut_day,3)))
+                
                 #print("Список запросов  в дату {} с указанием времени:".format(inptut_day),(def_word_list(inptut_day,3)))
-                print("Кол-во уникальных запросов за {} число с указанием времени(ЧЧ:ММ:СС) - {} ,перечень этих запросов: ".format(inptut_day,(len(uniq(def_word_list(inptut_day,3))))),(uniq(def_word_list(inptut_day,3))))
+                print("Кол-во уникальных запросов за {} число с указанием времени(ЧЧ:ММ:СС) - {} ,перечень этих запросов: ".format(inptut_day,(len(uniq(def_word_list(inptut_day,3))))),(uniq(def_word_list(inptut_day,3))))     
                 print("\n"*3,"Кол-во запросов за  {} число с указанием их кол-ва в конкретную секунду:".format(inptut_day),(def_counter(inptut_day,3)))
             if input_menu_3=='3':
                 print("Выбран поиск по Браузеру")

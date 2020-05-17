@@ -1,6 +1,7 @@
 import datetime
 import pytz
 import calendar
+import os
 
 
 cdt = datetime.datetime.now().date()
@@ -72,3 +73,4 @@ print(d_minsk)
 # print("Вывод  d_minsk в формете +3 Europe/Minsk :",d_minsk)
 # print("Вывод  d_minsk в формете             UTC :",d_utc)
 # print("Вывод  d_minsk в формете     d_minsk_utc :",d_minsk_utc)
+os.system('cls' if os.name=='nt' else 'clear')
