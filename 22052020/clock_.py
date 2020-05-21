@@ -1,6 +1,7 @@
 import datetime
 import os
 import time
+import random
 
 #реализация -в лоб.
 #недо-матрица цифр
@@ -36,7 +37,7 @@ d_c9=[gg,gg,gg,gg,gg,gg,gg,gg,gg,sym]
 #заношу в один массив
 c=[c0,c1,c2,c3,c4,c5,c6,c7,c8,c9]
 d_c=[d_c0,d_c1,d_c2,d_c3,d_c4,d_c5,d_c6,d_c7,d_c8,d_c9]
-import random
+
 while True:
     #рандомер цвета
     r=random.randrange(90,99)
