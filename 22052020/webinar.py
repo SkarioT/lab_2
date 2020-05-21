@@ -3,6 +3,7 @@ import datetime
 import os
 import time
 from tkinter import *
+import random
 a=0
 class Human:
     def __init__(self,name,sex,age):
@@ -36,3 +37,10 @@ a="Буква А"
 print(a.__repr__())
 print(a.__str__())
 print(a)
+r=random.randrange(0,99)
+
+CRED = '\033[{}m'.format(r)
+CEND = '\033[0m'
+print(CRED + "Error, does not compute!" + CEND)
+
+
