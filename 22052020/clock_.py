@@ -61,7 +61,7 @@ while True:
     print(c[column1][8],c[column2][8],d_c[8][i],c[column3][8],c[column4][8],d_c[8][j],c[column5][8],c[column6][8])
     print(c[column1][9],c[column2][9],d_c[9][i],c[column3][9],c[column4][9],d_c[9][j],c[column5][9],c[column6][9])
     time.sleep(1)
-    os.system('cls')
+    os.system('cls' if os.name=='nt' else 'clear')
     print(finish_color)
     #циклы для отрисовки точек
     i+=1
